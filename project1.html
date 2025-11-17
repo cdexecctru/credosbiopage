@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROJECT 1 | Shadow Net</title>
+    
+    <link rel="icon" href="pfp.png" type="image/png"> 
+
+    <link rel="stylesheet" href="style.css"> 
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <video autoplay muted loop id="background-video">
+        <source src="https://r2.guns.lol/fa73f29f-da36-4cf7-98d2-c7c10fc37783.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div id="loading-screen" class="active">
+        <div class="neon-text loading-title">
+            <h2>INITIATING PROJECT // ACCESS GRANTED</h2>
+        </div>
+        <button id="enter-button" class="neon-button">ENTER PROJECT</button> 
+        <p class="small-text">Warning: Loud Music May Start.</p>
+    </div>
+
+    <main id="main-content" class="hidden">
+        <div class="profile-card">
+            
+            <h1 class="username neon-text" style="font-size: 2.2em;">PROJECT 1: SHADOW NET</h1>
+            <p class="status-message">A secure communication channel established by CREDOS.</p>
+
+            <div class="project-section">
+                
+                <img src="project1.png" alt="Project 1 Terminal View" class="project-image-preview-full">
+                
+                <a href="project1.exe" download="project1.exe" class="glow-download-button" title="Download project1.exe">
+                    <i class="fas fa-download"></i> CLICK TO DOWNLOAD (project1.exe)
+                </a>
+            </div>
+
+            <div class="social-links">
+                <a href="index.html" class="social-icon" title="Go Back Home"><i class="fas fa-arrow-left"></i></a>
+            </div>
+            
+            <div id="left-bottom-counter" class="views-bottom">
+                <span class="neon-text-small">PROJECT VIEWS: 420</span>
+            </div>
+        </div>
+    </main>
+
+    <audio id="background-music" src="https://r2.guns.lol/6228e634-0052-424b-970f-85219a04c469.mp3" loop muted></audio>
+    
+    <script src="script.js"></script>
+</body>
+</html>
