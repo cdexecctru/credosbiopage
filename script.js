@@ -82,7 +82,7 @@ function displayRecords() {
             <p><strong>Olay:</strong> ${record.event} (${record.type})</p>
             <p><strong>Sayfa:</strong> ${record.page}</p>
             <p><strong>Konum:</strong> ${record.geo}</p>
-            <p><strong>IP Adresi:</strong> ${record.ip_address || 'Kayıt Yok'}</p>
+            <p><strong>IP Adresi:</strong> ${record.ip_api || 'Kayıt Yok'}</p>
             <p><strong>Tarayıcı:</strong> ${record.browser}...</p>
         `;
         listContainer.appendChild(div);
@@ -90,7 +90,7 @@ function displayRecords() {
 }
 
 /**
- * Giriş işlemini kontrol eder.
+ * Giriş işlemini kontrol eder. Oturum kaydı tutulmaz.
  */
 function handleLogin() {
     const passwordInput = document.getElementById('admin-password');
@@ -99,8 +99,9 @@ function handleLogin() {
     if (passwordInput.value === STATIC_PASSWORD) {
         document.getElementById('login-section').classList.add('hidden');
         document.getElementById('analytics-section').classList.remove('hidden');
-        // localStorage.setItem('admin_logged_in', 'true'); // ❌ Oturum kaydı kaldırıldı
+        // Oturum kaydı tutulmadığı için bu kısım yok
         displayRecords();
+        loginMessage.textContent = 'Giriş Başarılı!';
     } else {
         loginMessage.textContent = 'Hatalı Şifre!';
         passwordInput.value = '';
@@ -170,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const loginButton = document.getElementById('login-button');
         const clearButton = document.getElementById('clear-data-button');
 
-        // ❌ Oturum Kontrolü Kaldırıldı: Sayfa yüklendiğinde daima giriş ekranını göster
+        // Sayfa yüklendiğinde daima giriş ekranını gösterir (oturum kaydı yok)
         
         if (loginButton) {
             loginButton.addEventListener('click', handleLogin);
