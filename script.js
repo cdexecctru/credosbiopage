@@ -1,9 +1,10 @@
 // =======================================================
-// ADMİN PANELİ VE ANALİZ SCRIPTİ
-// Şifre kontrolü Netlify Function (Sunucu) üzerinden yapılır.
+// ADMİN PANELİ VE ANALİZ SCRIPTİ (GÜVENSİZ VERSİYON)
+// Şifre kontrolü doğrudan bu JavaScript dosyası içinde yapılır.
 // =======================================================
 
-// ❌ ŞİFRE ARTIK BURADA DEĞİL! Şifre kontrolü sunucuya taşınmıştır.
+// ⚠️ UYARI: Şifre doğrudan kodda açıkça görünmektedir.
+const STATIC_PASSWORD = 'Emir9163cd!'; // Şifreniz buraya eklendi
 
 const GEO_API_URL = 'https://ipapi.co/json/'; 
 const RECORD_KEY = 'credos_visitor_records';
@@ -12,10 +13,6 @@ const RECORD_KEY = 'credos_visitor_records';
 // ANALİZ FONKSİYONLARI 
 // =======================================================
 
-/**
- * Coğrafi Konum bilgisini API'den çeker.
- * @returns {Promise<object>} Şehir, ülke, IP ve tarayıcı bilgisi.
- */
 async function getVisitorInfo() {
     try {
         const response = await fetch(GEO_API_URL);
@@ -32,9 +29,6 @@ async function getVisitorInfo() {
     }
 }
 
-/**
- * Ziyaretçi verisini LocalStorage'a kaydeder.
- */
 function recordVisitorEvent(event_name, event_type = "PageView") {
     getVisitorInfo().then(info => {
         const timestamp = new Date().toLocaleString('tr-TR');
@@ -58,12 +52,9 @@ function recordVisitorEvent(event_name, event_type = "PageView") {
 }
 
 // =======================================================
-// ADMİN PANELİ FONKSİYONLARI
+// ADMİN PANELİ FONKSİYONLARI (KOLAY GİRİŞ)
 // =======================================================
 
-/**
- * LocalStorage'daki verileri Admin panelinde listeler.
- */
 function displayRecords() {
     const records = JSON.parse(localStorage.getItem(RECORD_KEY) || '[]');
     const listContainer = document.getElementById('visitor-list');
@@ -90,41 +81,24 @@ function displayRecords() {
 }
 
 /**
- * Giriş işlemini Netlify Function üzerinden kontrol eder.
+ * Giriş işlemini doğrudan JavaScript dosyasındaki statik şifre ile kontrol eder.
  */
-async function handleLogin() {
+function handleLogin() {
     const passwordInput = document.getElementById('admin-password');
     const loginMessage = document.getElementById('login-message');
     const enteredPassword = passwordInput.value;
     
-    // Yükleniyor mesajı
-    loginMessage.textContent = 'Kontrol ediliyor...'; 
-
-    try {
-        // Netlify Function'a şifre kontrolü için istek gönderiliyor
-        const response = await fetch('/.netlify/functions/check-password', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ password: enteredPassword })
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-            // Şifre doğruysa
-            document.getElementById('login-section').classList.add('hidden');
-            document.getElementById('analytics-section').classList.remove('hidden');
-            displayRecords();
-            loginMessage.textContent = 'Giriş Başarılı!';
-        } else {
-            // Şifre yanlışsa
-            loginMessage.textContent = 'Hatalı Şifre!';
-            passwordInput.value = '';
-        }
-    } catch (error) {
-        // Sunucu veya ağ hatası (Fonksiyon bulunamadı veya çalışmadı)
-        console.error("Giriş sırasında hata oluştu:", error);
-        loginMessage.textContent = 'Sunucuya ulaşılamıyor veya Fonksiyon Hatası.';
+    // ŞİFRE KONTROLÜ (GÜVENSİZ):
+    if (enteredPassword === STATIC_PASSWORD) {
+        // Şifre doğruysa
+        document.getElementById('login-section').classList.add('hidden');
+        document.getElementById('analytics-section').classList.remove('hidden');
+        displayRecords();
+        loginMessage.textContent = 'Giriş Başarılı!';
+    } else {
+        // Şifre yanlışsa
+        loginMessage.textContent = 'Hatalı Şifre!';
+        passwordInput.value = '';
     }
 }
 
