@@ -12,6 +12,31 @@ body {
     perspective: 1000px; 
 }
 
+/* YENİ: ADMIN GİRİŞ BUTONU STİLİ (Sağ Üst) */
+#admin-login-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%; /* Yuvarlak şekil */
+    background: rgba(138, 43, 226, 0.7); /* Mor arka plan */
+    color: #fff;
+    font-size: 1.5em;
+    z-index: 10;
+    box-shadow: 0 0 10px #8A2BE2;
+    transition: all 0.3s ease-in-out;
+}
+#admin-login-button:hover {
+    background: #fff;
+    color: #000;
+    box-shadow: 0 0 20px #8A2BE2, 0 0 40px #8A2BE2;
+    transform: scale(1.1);
+}
+
 /* YEREL VİDEO ARKA PLAN STİLİ */
 #background-video {
     position: fixed;
@@ -86,7 +111,7 @@ body {
 
 /* --- PFP KARE RESMİ DAİREYE SIĞDIRMA VE BOYUT KÜÇÜLTME STİLLERİ --- */
 
-/* BÜYÜK PFP ÇERÇEVESİ (DAİRE) - Boyut Küçültüldü (80x80px) */
+/* BÜYÜK PFP ÇERÇEVESİ (DAİRE) - Boyut: 80x80px */
 .pfp-container {
     position: relative;
     width: 80px; 
@@ -107,7 +132,7 @@ body {
     display: block;
 }
 
-/* KÜÇÜK PFP ÇERÇEVESİ (DURUM KUTUSU İÇİN) - Boyut Küçültüldü (35x35px) */
+/* KÜÇÜK PFP ÇERÇEVESİ (DURUM KUTUSU İÇİN) - Boyut: 35x35px */
 .status-box {
     display: flex;
     align-items: center;
@@ -312,6 +337,66 @@ body {
     box-shadow: 0 0 15px #fff, 0 0 30px #8A2BE2, 0 0 50px rgba(138, 43, 226, 1);
 }
 
+/* --- ADMIN PANELİ ÖZEL STİLLERİ --- */
+
+.admin-panel {
+    max-width: 600px; 
+}
+
+#login-section input[type="password"] {
+    width: 80%;
+    padding: 10px;
+    margin: 15px 0;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #8A2BE2;
+    color: #fff;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1.1em;
+}
+
+#analytics-section.hidden {
+    display: none;
+}
+
+.clear-button {
+    background: none;
+    border: 2px solid #ff0000;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    margin-bottom: 20px;
+}
+.clear-button:hover {
+    background: #ff0000;
+    box-shadow: 0 0 20px #ff0000;
+}
+
+.visitor-container {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    border: 1px solid #4B0082;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.visitor-record {
+    background: rgba(138, 43, 226, 0.1);
+    border: 1px solid rgba(138, 43, 226, 0.3);
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    word-wrap: break-word;
+}
+
+.visitor-record p {
+    margin: 3px 0;
+}
+
+.visitor-record strong {
+    color: #fff;
+}
+
 /* Medya sorguları: Mobil cihazlar için responsive ayarlar */
 @media (max-width: 600px) {
     .profile-card {
@@ -331,8 +416,15 @@ body {
         font-size: 0.8em;
     }
     .pfp-container {
-        width: 70px; /* Mobil uyumluluk için biraz daha küçülttük */
+        width: 70px; 
         height: 70px;
+    }
+    #admin-login-button { /* Mobil için butonu biraz küçült */
+        width: 40px;
+        height: 40px;
+        top: 10px;
+        right: 10px;
+        font-size: 1.2em;
     }
 }
 

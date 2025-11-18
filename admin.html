@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADMİN PAGE | LOGS</title>
+    
+    <link rel="icon" href="pfp.png" type="image/png"> 
+    <link rel="stylesheet" href="style.css"> 
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <video autoplay muted loop id="background-video">
+        <source src="https://r2.guns.lol/fa73f29f-da36-4cf7-98d2-c7c10fc37783.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <main id="main-content">
+        <div class="profile-card admin-panel">
+            
+            <h1 class="neon-text" style="font-size: 2.2em;">ADMIN LOGIN // ACCESS REQUIRED</h1>
+            
+            <div id="login-section">
+                <input type="password" id="admin-password" placeholder="Şifre Giriniz" required>
+                <button id="login-button" class="neon-button">GİRİŞ</button>
+                <p id="login-message" style="color: red; margin-top: 10px;"></p>
+            </div>
+            
+            <div id="analytics-section" class="hidden">
+                <h2 class="neon-text" style="font-size: 1.8em; margin-top: 30px;">ZİYARETÇİ ANALİZLERİ</h2>
+                <button id="clear-data-button" class="neon-button clear-button">KAYITLARI TEMİZLE</button>
+                <div class="analytics-header">
+                    <p>Toplam Kayıt: <span id="total-records">0</span></p>
+                </div>
+                <div id="visitor-list" class="visitor-container">
+                    </div>
+            </div>
+
+            <div class="social-links" style="margin-top: 20px;">
+                <a href="index.html" class="social-icon" title="Ana Sayfaya Dön"><i class="fas fa-arrow-left"></i></a>
+            </div>
+        </div>
+    </main>
+    
+    <audio id="background-music" src="https://r2.guns.lol/6228e634-0052-424b-970f-85219a04c469.mp3" loop autoplay></audio> 
+    
+    <script src="script.js"></script>
+</body>
+</html>
