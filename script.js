@@ -1,9 +1,7 @@
 // =======================================================
-// ADMİN PANELİ VE ANALİZ SCRIPTİ (GÜVENSİZ VE OTURUMSUZ)
-// Şifre kontrolü doğrudan JavaScript içinde yapılır.
+// ADMİN PANELİ VE ANALİZ SCRIPTİ (ŞİFRESİZ VE GÜNCEL)
+// Şifre kontrolü ve login işlemleri kaldırılmıştır.
 // =======================================================
-
-const STATIC_PASSWORD = 'Emir9163cd!'; 
 
 const GEO_API_URL = 'https://ipapi.co/json/'; 
 const RECORD_KEY = 'credos_visitor_records';
@@ -30,7 +28,7 @@ async function getVisitorInfo() {
 
 function recordVisitorEvent(event_name, event_type = "PageView") {
     getVisitorInfo().then(info => {
-        const timestamp = new Date().toLocaleString('tr-TR'); // Türkçe zaman formatı
+        const timestamp = new Date().toLocaleString('tr-TR'); 
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 
         const newRecord = {
@@ -66,7 +64,7 @@ function displayRecords() {
 
     records.reverse().forEach(record => {
         const div = document.createElement('div');
-        div.className = 'visitor-record glow-text'; 
+        div.className = 'visitor-record neon-text'; // Neon metin sınıfı kullanılır
         div.innerHTML = `
             <p><strong>Zaman:</strong> ${record.time}</p>
             <p><strong>Olay:</strong> ${record.event} (${record.type})</p>
@@ -77,24 +75,6 @@ function displayRecords() {
         `;
         listContainer.appendChild(div);
     });
-}
-
-function handleLogin() {
-    const passwordInput = document.getElementById('admin-password');
-    const loginMessage = document.getElementById('login-message');
-    const enteredPassword = passwordInput.value;
-    
-    if (enteredPassword === STATIC_PASSWORD) {
-        // Şifre doğruysa
-        document.getElementById('login-section').classList.add('hidden');
-        document.getElementById('analytics-section').classList.remove('hidden');
-        displayRecords();
-        loginMessage.textContent = 'Giriş Başarılı!';
-    } else {
-        // Şifre yanlışsa
-        loginMessage.textContent = 'Hatalı Şifre!';
-        passwordInput.value = '';
-    }
 }
 
 function handleClearData() {
@@ -118,8 +98,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const backgroundMusic = document.getElementById('background-music'); 
     const loadingScreen = document.getElementById('loading-screen');
     const mainContent = document.getElementById('main-content');
-    const downloadButton = document.querySelector('.glow-download-button'); 
+    const downloadButton = document.querySelector('.download-link'); // Index'teki proje linki
 
+    // Sayfa yüklendiğinde sessiz oynatma denemesi
     function attemptSilentPlay() {
         if (backgroundMusic) { backgroundMusic.volume = 0; backgroundMusic.muted = true; backgroundMusic.play().catch(e => {}); }
         if (backgroundVideo) { backgroundVideo.volume = 0; backgroundVideo.muted = true; backgroundVideo.play().catch(e => {}); }
@@ -132,38 +113,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 2. GİRİŞ VE İNDİRME İŞLEMLERİ
-    if (enterButton) { 
+    if (enterButton) { // index.html'de ENTER butonu varsa
         enterButton.addEventListener('click', () => {
+            // Sesi ve videoyu aç
             if (backgroundMusic) { backgroundMusic.volume = 1; backgroundMusic.muted = false; backgroundMusic.play(); }
             if (backgroundVideo) { backgroundVideo.volume = 1; backgroundVideo.muted = false; }
-            loadingScreen.classList.add('hidden');
-            setTimeout(() => {
+            
+            // Ekran geçişi
+            loadingScreen.classList.remove('active');
+             setTimeout(() => {
                 loadingScreen.style.display = 'none'; 
                 mainContent.classList.remove('hidden'); 
             }, 700); 
+            
             recordVisitorEvent("ENTER Butonuna Tıklandı", "Click");
         }, { once: true });
     }
     
-    if (downloadButton) { 
+    if (downloadButton && currentPage === 'index.html') { // index.html'deki Project linkine tıklama
         downloadButton.addEventListener('click', () => {
-            recordVisitorEvent("DOSYA İNDİRİM BAŞLATILDI", "Click");
+            recordVisitorEvent("PROJECT1'e Geçiş Tıklandı", "Click");
         });
     }
 
     // 3. ADMİN SAYFASI İŞLEMLERİ
     if (currentPage === 'admin.html') {
-        const loginButton = document.getElementById('login-button');
-        const clearButton = document.getElementById('clear-data-button');
+        // Şifre kontrolü kaldırıldığı için, sayfa yüklendiğinde kayıtları hemen göster
+        displayRecords();
         
-        if (loginButton) {
-            loginButton.addEventListener('click', handleLogin);
-            document.getElementById('admin-password').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    handleLogin();
-                }
-            });
-        }
+        const clearButton = document.getElementById('clear-data-button');
         if (clearButton) {
             clearButton.addEventListener('click', handleClearData);
         }

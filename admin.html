@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,22 +20,17 @@
     <main id="main-content">
         <div class="profile-card admin-panel">
             
-            <h1 class="neon-text" style="font-size: 2.2em;">ADMIN LOGIN // ACCESS REQUIRED</h1>
-            
-            <div id="login-section">
-                <input type="password" id="admin-password" placeholder="Şifre Giriniz" required>
-                <button id="login-button" class="neon-button">GİRİŞ</button>
-                <p id="login-message" style="color: red; margin-top: 10px;"></p>
-            </div>
-            
-            <div id="analytics-section" class="hidden">
-                <h2 class="neon-text" style="font-size: 1.8em; margin-top: 30px;">ZİYARETÇİ ANALİZLERİ</h2>
-                <button id="clear-data-button" class="neon-button clear-button">KAYITLARI TEMİZLE</button>
+            <div id="analytics-section"> 
+                <h1 class="neon-text" style="font-size: 2.2em;">ZİYARETÇİ ANALİZLERİ</h1>
+
                 <div class="analytics-header">
                     <p>Toplam Kayıt: <span id="total-records">0</span></p>
+                    <button id="clear-data-button" class="neon-button clear-button">KAYITLARI TEMİZLE</button>
                 </div>
+
                 <div id="visitor-list" class="visitor-container">
-                    </div>
+                    <p class="neon-text">Veri yükleniyor...</p>
+                </div>
             </div>
 
             <div class="social-links" style="margin-top: 20px;">
