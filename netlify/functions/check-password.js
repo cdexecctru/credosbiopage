@@ -1,41 +1,195 @@
-// Sunucusuz Fonksiyon: check-password.js
-// Projenizdeki netlify/functions klasörüne kaydedin.
-// Bu kod Netlify'da çalışır ve şifreyi Ortam Değişkeni'nden alır.
+// =======================================================
+// ADMİN PANELİ VE ANALİZ SCRIPTİ (NETLIFY FUNCTION UYUMLU)
+// Şifre kontrolü Netlify Function (Sunucu) üzerinden yapılır.
+// =======================================================
 
-exports.handler = async (event) => {
-    // Netlify Ayarlarında (SHIELD_PASSWORD) saklanan gizli şifreyi al
-    const CORRECT_PASSWORD = process.env.SHIELD_PASSWORD; 
+// ❌ ŞİFRE ARTIK BURADA DEĞİL! Şifre kontrolü sunucuya taşınmıştır.
 
-    // Sadece POST isteklerini kabul et (Güvenlik için)
-    if (event.httpMethod !== 'POST') {
-        return { 
-            statusCode: 405, 
-            body: JSON.stringify({ success: false, error: 'Method Not Allowed' }) 
+const GEO_API_URL = 'https://ipapi.co/json/'; 
+const RECORD_KEY = 'credos_visitor_records';
+
+// =======================================================
+// ANALİZ FONKSİYONLARI 
+// =======================================================
+
+async function getVisitorInfo() {
+    try {
+        const response = await fetch(GEO_API_URL);
+        const data = await response.json();
+        
+        return {
+            city: data.city || 'Bilinmiyor',
+            country: data.country_name || 'Bilinmiyor',
+            ip_api: data.ip || 'Erişim Engellendi', 
+            userAgent: navigator.userAgent
         };
+    } catch (error) {
+        return { city: 'Hata', country: 'Hata', ip_api: 'Hata', userAgent: navigator.userAgent };
+    }
+}
+
+function recordVisitorEvent(event_name, event_type = "PageView") {
+    getVisitorInfo().then(info => {
+        const timestamp = new Date().toLocaleString('tr-TR');
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+
+        const newRecord = {
+            id: Date.now(),
+            time: timestamp,
+            event: event_name,
+            type: event_type,
+            page: currentPage,
+            geo: `${info.city}, ${info.country}`,
+            ip_address: info.ip_api, 
+            browser: info.userAgent.substring(0, 150)
+        };
+
+        const records = JSON.parse(localStorage.getItem(RECORD_KEY) || '[]');
+        records.push(newRecord);
+        localStorage.setItem(RECORD_KEY, JSON.stringify(records));
+    });
+}
+
+// =======================================================
+// ADMİN PANELİ FONKSİYONLARI (GÜVENLİ GİRİŞ)
+// =======================================================
+
+function displayRecords() {
+    const records = JSON.parse(localStorage.getItem(RECORD_KEY) || '[]');
+    const listContainer = document.getElementById('visitor-list');
+    const totalRecordsSpan = document.getElementById('total-records');
+    
+    if (!listContainer || !totalRecordsSpan) return;
+
+    listContainer.innerHTML = '';
+    totalRecordsSpan.textContent = records.length;
+
+    records.reverse().forEach(record => {
+        const div = document.createElement('div');
+        div.className = 'visitor-record';
+        div.innerHTML = `
+            <p><strong>Zaman:</strong> ${record.time}</p>
+            <p><strong>Olay:</strong> ${record.event} (${record.type})</p>
+            <p><strong>Sayfa:</strong> ${record.page}</p>
+            <p><strong>Konum:</strong> ${record.geo}</p>
+            <p><strong>IP Adresi:</strong> ${record.ip_address || 'Kayıt Yok'}</p>
+            <p><strong>Tarayıcı:</strong> ${record.browser}...</p>
+        `;
+        listContainer.appendChild(div);
+    });
+}
+
+/**
+ * Giriş işlemini Netlify Function üzerinden ASENKRON olarak kontrol eder.
+ */
+async function handleLogin() {
+    const passwordInput = document.getElementById('admin-password');
+    const loginMessage = document.getElementById('login-message');
+    const enteredPassword = passwordInput.value;
+    
+    // Yükleniyor mesajı
+    loginMessage.textContent = 'Kontrol ediliyor...'; 
+
+    try {
+        // Fonksiyona istek gönderen ve "Eşleşme Bulunamadı" hatasına neden olan kritik blok
+        const response = await fetch('/.netlify/functions/check-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password: enteredPassword })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            // Şifre doğruysa
+            document.getElementById('login-section').classList.add('hidden');
+            document.getElementById('analytics-section').classList.remove('hidden');
+            displayRecords();
+            loginMessage.textContent = 'Giriş Başarılı!';
+        } else {
+            // Şifre yanlışsa
+            loginMessage.textContent = 'Hatalı Şifre!';
+            passwordInput.value = '';
+        }
+    } catch (error) {
+        // Ağ veya Fonksiyon Bulunamadı (404) hatası loglanır
+        console.error("Netlify Function'a ulaşım hatası:", error);
+        loginMessage.textContent = 'Sunucuya ulaşılamıyor. Konfigürasyon veya Ağ Hatası.';
+    }
+}
+
+function handleClearData() {
+    if (confirm("Tüm ziyaretçi kayıtlarını silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.")) {
+        localStorage.removeItem(RECORD_KEY);
+        displayRecords();
+        alert("Kayıtlar temizlendi!");
+    }
+}
+
+// =======================================================
+// ANA DOM İŞLEYİCİ (Müzik ve Ziyaretçi Kayıtları)
+// =======================================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    const currentPage = window.location.pathname.split('/').pop();
+    const enterButton = document.getElementById('enter-button');
+    
+    const backgroundVideo = document.getElementById('background-video'); 
+    const backgroundMusic = document.getElementById('background-music'); 
+    const loadingScreen = document.getElementById('loading-screen');
+    const mainContent = document.getElementById('main-content');
+    const downloadButton = document.querySelector('.glow-download-button'); 
+
+    function attemptSilentPlay() {
+        if (backgroundMusic) { backgroundMusic.volume = 0; backgroundMusic.muted = true; backgroundMusic.play().catch(e => {}); }
+        if (backgroundVideo) { backgroundVideo.volume = 0; backgroundVideo.muted = true; backgroundVideo.play().catch(e => {}); }
+    }
+    attemptSilentPlay();
+
+    if (currentPage === 'index.html' || currentPage === '' || currentPage === 'project1.html') {
+        recordVisitorEvent("SAYFA YÜKLENDİ", "PageView");
+    }
+
+    if (enterButton) { 
+        enterButton.addEventListener('click', () => {
+            if (backgroundMusic) { 
+                backgroundMusic.volume = 1; 
+                backgroundMusic.muted = false; 
+                backgroundMusic.play(); 
+            }
+            if (backgroundVideo) { 
+                backgroundVideo.volume = 1; 
+                backgroundVideo.muted = false; 
+            }
+            loadingScreen.classList.add('hidden');
+            setTimeout(() => {
+                loadingScreen.style.display = 'none'; 
+                mainContent.classList.remove('hidden'); 
+            }, 700); 
+            recordVisitorEvent("ENTER Butonuna Tıklandı", "Click");
+        }, { once: true });
     }
     
-    try {
-        // İstemciden (script.js) gelen şifreyi al
-        const body = JSON.parse(event.body);
-        const enteredPassword = body.password;
-
-        // Şifreleri karşılaştır
-        if (enteredPassword === CORRECT_PASSWORD) {
-            return {
-                statusCode: 200, // Başarılı yanıt
-                body: JSON.stringify({ success: true })
-            };
-        } else {
-            return {
-                statusCode: 200, // Başarısız olsa da 200 dönmek daha güvenlidir
-                body: JSON.stringify({ success: false })
-            };
-        }
-    } catch (e) {
-        // JSON ayrıştırma hatası veya diğer sunucu hataları
-        return { 
-            statusCode: 500, 
-            body: JSON.stringify({ success: false, error: 'Sunucu Hatası' }) 
-        };
+    if (downloadButton) { 
+        downloadButton.addEventListener('click', () => {
+            recordVisitorEvent("DOSYA İNDİRİM BAŞLATILDI", "Click");
+        });
     }
-};
+
+    if (currentPage === 'admin.html') {
+        const loginButton = document.getElementById('login-button');
+        const clearButton = document.getElementById('clear-data-button');
+        
+        if (loginButton) {
+            loginButton.addEventListener('click', handleLogin);
+            document.getElementById('admin-password').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleLogin();
+                }
+            });
+        }
+        if (clearButton) {
+            clearButton.addEventListener('click', handleClearData);
+        }
+    }
+});
