@@ -1,18 +1,20 @@
 // =======================================================
-// ADMİN PANELİ VE ANALİZ SCRIPTİ (GÜVENSİZ VERSİYON)
-// Şifre kontrolü doğrudan bu JavaScript dosyası içinde yapılır.
+// ADMİN PANELİ VE ANALİZ SCRIPTİ
+// Her sayfa yenilemesinde şifre sorar.
 // =======================================================
 
-// ⚠️ UYARI: Şifre doğrudan kodda açıkça görünmektedir.
-const STATIC_PASSWORD = 'Emir9163cd!'; // Şifreniz buraya eklendi
-
+const STATIC_PASSWORD = 'Emir9163cd!'; // ❗ ADMİN ŞİFRENİZ ❗
 const GEO_API_URL = 'https://ipapi.co/json/'; 
 const RECORD_KEY = 'credos_visitor_records';
 
 // =======================================================
-// ANALİZ FONKSİYONLARI 
+// ANALİZ FONKSİYONLARI
 // =======================================================
 
+/**
+ * Coğrafi Konum bilgisini API'den çeker.
+ * @returns {Promise<object>} Şehir, ülke, IP ve tarayıcı bilgisi.
+ */
 async function getVisitorInfo() {
     try {
         const response = await fetch(GEO_API_URL);
@@ -29,6 +31,9 @@ async function getVisitorInfo() {
     }
 }
 
+/**
+ * Ziyaretçi verisini LocalStorage'a kaydeder.
+ */
 function recordVisitorEvent(event_name, event_type = "PageView") {
     getVisitorInfo().then(info => {
         const timestamp = new Date().toLocaleString('tr-TR');
@@ -52,9 +57,12 @@ function recordVisitorEvent(event_name, event_type = "PageView") {
 }
 
 // =======================================================
-// ADMİN PANELİ FONKSİYONLARI (KOLAY GİRİŞ)
+// ADMİN PANELİ FONKSİYONLARI
 // =======================================================
 
+/**
+ * LocalStorage'daki verileri Admin panelinde listeler.
+ */
 function displayRecords() {
     const records = JSON.parse(localStorage.getItem(RECORD_KEY) || '[]');
     const listContainer = document.getElementById('visitor-list');
@@ -65,6 +73,7 @@ function displayRecords() {
     listContainer.innerHTML = '';
     totalRecordsSpan.textContent = records.length;
 
+    // Kayıtları tersten (en yeniyi en üste) listele
     records.reverse().forEach(record => {
         const div = document.createElement('div');
         div.className = 'visitor-record';
@@ -81,27 +90,26 @@ function displayRecords() {
 }
 
 /**
- * Giriş işlemini doğrudan JavaScript dosyasındaki statik şifre ile kontrol eder.
+ * Giriş işlemini kontrol eder.
  */
 function handleLogin() {
     const passwordInput = document.getElementById('admin-password');
     const loginMessage = document.getElementById('login-message');
-    const enteredPassword = passwordInput.value;
     
-    // ŞİFRE KONTROLÜ (GÜVENSİZ):
-    if (enteredPassword === STATIC_PASSWORD) {
-        // Şifre doğruysa
+    if (passwordInput.value === STATIC_PASSWORD) {
         document.getElementById('login-section').classList.add('hidden');
         document.getElementById('analytics-section').classList.remove('hidden');
+        // localStorage.setItem('admin_logged_in', 'true'); // ❌ Oturum kaydı kaldırıldı
         displayRecords();
-        loginMessage.textContent = 'Giriş Başarılı!';
     } else {
-        // Şifre yanlışsa
         loginMessage.textContent = 'Hatalı Şifre!';
         passwordInput.value = '';
     }
 }
 
+/**
+ * Kayıtları siler ve ekranı günceller.
+ */
 function handleClearData() {
     if (confirm("Tüm ziyaretçi kayıtlarını silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.")) {
         localStorage.removeItem(RECORD_KEY);
@@ -111,40 +119,37 @@ function handleClearData() {
 }
 
 // =======================================================
-// ANA DOM İŞLEYİCİ (Müzik ve Ziyaretçi Kayıtları)
+// ANA DOM İŞLEYİCİ
 // =======================================================
 
 document.addEventListener('DOMContentLoaded', () => {
     const currentPage = window.location.pathname.split('/').pop();
     const enterButton = document.getElementById('enter-button');
     
+    // MÜZİK VE VİDEO İŞLEMLERİ
     const backgroundVideo = document.getElementById('background-video'); 
     const backgroundMusic = document.getElementById('background-music'); 
     const loadingScreen = document.getElementById('loading-screen');
     const mainContent = document.getElementById('main-content');
     const downloadButton = document.querySelector('.glow-download-button'); 
 
+    // Ses ve video başlatma
     function attemptSilentPlay() {
         if (backgroundMusic) { backgroundMusic.volume = 0; backgroundMusic.muted = true; backgroundMusic.play().catch(e => {}); }
         if (backgroundVideo) { backgroundVideo.volume = 0; backgroundVideo.muted = true; backgroundVideo.play().catch(e => {}); }
     }
     attemptSilentPlay();
 
+    // 1. ZİYARETÇİ ANALİZ KAYDI (index.html, project1.html'de çalışır)
     if (currentPage === 'index.html' || currentPage === '' || currentPage === 'project1.html') {
         recordVisitorEvent("SAYFA YÜKLENDİ", "PageView");
     }
 
-    if (enterButton) { 
+    // 2. GİRİŞ VE İNDİRME İŞLEMLERİ
+    if (enterButton) { // index.html veya project1.html sayfasında ise
         enterButton.addEventListener('click', () => {
-            if (backgroundMusic) { 
-                backgroundMusic.volume = 1; 
-                backgroundMusic.muted = false; 
-                backgroundMusic.play(); 
-            }
-            if (backgroundVideo) { 
-                backgroundVideo.volume = 1; 
-                backgroundVideo.muted = false; 
-            }
+            if (backgroundMusic) { backgroundMusic.volume = 1; backgroundMusic.muted = false; backgroundMusic.play(); }
+            if (backgroundVideo) { backgroundVideo.volume = 1; backgroundVideo.muted = false; }
             loadingScreen.classList.add('hidden');
             setTimeout(() => {
                 loadingScreen.style.display = 'none'; 
@@ -154,18 +159,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { once: true });
     }
     
-    if (downloadButton) { 
+    if (downloadButton) { // project1.html sayfasında ise
         downloadButton.addEventListener('click', () => {
             recordVisitorEvent("DOSYA İNDİRİM BAŞLATILDI", "Click");
         });
     }
 
+    // 3. ADMİN SAYFASI İŞLEMLERİ (admin.html'de çalışır)
     if (currentPage === 'admin.html') {
         const loginButton = document.getElementById('login-button');
         const clearButton = document.getElementById('clear-data-button');
+
+        // ❌ Oturum Kontrolü Kaldırıldı: Sayfa yüklendiğinde daima giriş ekranını göster
         
         if (loginButton) {
             loginButton.addEventListener('click', handleLogin);
+            // Enter tuşu ile giriş
             document.getElementById('admin-password').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     handleLogin();
