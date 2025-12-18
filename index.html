@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ana Sayfa | Minecraft Server</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Bungee&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Ana Renkler ve Fontlar */
+        :root {
+            --color-primary: #5B86FF; 
+            --color-secondary: #0a0a0c; 
+            --color-card: #1a1a1e; 
+            --color-text: #e0e0e0; 
+            --color-text-light: #aaa;
+            --font-main: 'Roboto', sans-serif;
+            --font-title: 'Bungee', cursive; 
+        }
+
+        /* Sayfa Sıfırlama */
+        body {
+            font-family: var(--font-main);
+            margin: 0;
+            padding: 0;
+            background-color: var(--color-secondary);
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+
+        /* Header Arkaplanı */
+        .header-bg {
+            background: url('https://demo-site.leaderos.net/assets/flat/img/header-bg.png?cache=1750630063') center bottom/cover no-repeat; 
+            height: 350px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Geçişli Gölge */
+        .header-bg::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(10, 10, 12, 0) 0%, rgba(10, 10, 12, 0.9) 100%);
+            z-index: 2;
+        }
+
+        /* Header İçeriği */
+        header {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 3; 
+        }
+
+        .branding {
+            display: flex;
+            align-items: center;
+            padding-top: 50px;
+        }
+
+        /* YENİ LOGO STİLİ: Artık arkaplan resmi kullanacak */
+        .logo-circle {
+            background: url('https://cdn.discordapp.com/attachments/1447148623220572212/1450124557221630134/mcswlogo.png?ex=6941653c&is=694013bc&hm=0233b34654038384c50a6ab94d7161c05bbbbf5310ff0b3e777708467780a8ac&') center center/contain no-repeat;
+            background-color: transparent; /* Mavi arkaplanı kaldırıyoruz */
+            width: 70px; /* Logoya daha fazla yer veriyoruz */
+            height: 70px;
+            border-radius: 0; /* Köşeleri kaldırıyoruz */
+            margin-right: 15px;
+            text-indent: -9999px; /* CS yazısını gizliyoruz */
+        }
+
+        .server-status {
+            display: flex;
+            gap: 20px;
+        }
+
+        .status-item {
+            color: var(--color-text-light);
+            font-size: 0.9em;
+        }
+
+        .status-item span {
+            display: block;
+            color: white;
+            font-family: var(--font-title);
+            font-size: 1.2em;
+        }
+
+        /* Navigasyon */
+        .main-menu {
+            background-color: var(--color-card);
+            border-bottom: 2px solid var(--color-primary);
+            display: flex;
+            justify-content: center;
+            padding: 10px 20px;
+            max-width: 1200px;
+            margin: -30px auto 20px auto; 
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 4; 
+        }
+
+        .main-menu a {
+            color: var(--color-text);
+            text-decoration: none;
+            padding: 10px 20px;
+            font-weight: 700;
+            transition: color 0.3s, background-color 0.3s;
+            border-radius: 4px;
+        }
+
+        .main-menu a:hover {
+            color: var(--color-primary);
+        }
+
+        /* Ana İçerik Düzeni */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .main-content {
+            flex: 3;
+        }
+
+        .sidebar {
+            flex: 1;
+        }
+
+        h2 {
+            font-family: var(--font-title);
+            color: var(--color-primary);
+            border-bottom: 2px solid var(--color-card);
+            padding-bottom: 5px;
+            margin-top: 0;
+        }
+
+        /* Haber Kartları */
+        .news-item {
+            background-color: var(--color-card);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* HABER GÖRSELİ GÜNCELLENDİ */
+        .news-image {
+            width: 200px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 4px;
+            float: left;
+            margin-right: 20px;
+        }
+        
+        /* Kurallar Listesi Stili (Sidebar için de kullanılır) */
+        .rules-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .rules-list li {
+            background-color: #242428;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-left: 3px solid var(--color-primary);
+            border-radius: 4px;
+            font-size: 0.95em;
+        }
+
+        /* IP Kopyalama Butonu */
+        .ip-copy-button {
+            background-color: var(--color-primary);
+            color: white;
+            font-family: var(--font-title);
+            font-size: 1.5em;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: block;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            margin-bottom: 20px;
+        }
+        .ip-copy-button:hover {
+            background-color: #3f68d6;
+        }
+
+        /* Haber Kartı Butonu */
+        .news-button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 15px;
+            background-color: var(--color-primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .news-button:hover {
+            background-color: #3f68d6;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--color-card);
+            color: var(--color-text-light);
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+            font-size: 0.9em;
+        }
+        /* Discord Iframe */
+        .sidebar iframe {
+            display: block;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="header-bg">
+    <header>
+        <div class="branding">
+            <div class="logo-circle">CS</div> 
+            <div class="server-status">
+                <div class="status-item" id="player-status"><span>VERİ YÜKLENİYOR...</span> CREDOS SMP</div>
+                <div class="status-item"><span>+ ÜYE ÇEVRİMİÇİ</span> DISCORD TOPLULUĞU</div>
+            </div>
+        </div>
+    </header>
+</div>
+
+<nav class="main-menu">
+    <a href="index.html">Anasayfa</a>
+    <a href="store.html">Mağaza</a>
+    <a href="#">Forum</a>
+    <a href="rules.html">Kurallar</a>
+    <div style="flex-grow:1;"></div>
+</nav>
+
+<div class="container">
+    <div class="main-content">
+        <h2>Son Haberler</h2>
+
+        <div class="news-item" style="display:flex;">
+            <img src="https://cdn.discordapp.com/attachments/1447148623220572212/1450124557221630134/mcswlogo.png?ex=6941653c&is=694013bc&hm=0233b34654038384c50a6ab94d7161c05bbbbf5310ff0b3e777708467780a8ac&" alt="Kış Güncellemesi" class="news-image">
+            <div style="padding: 0 20px;">
+                <div style="font-size: 0.85em; color: var(--color-text-light);">Güncelleme - 10 Aralık, 2025</div>
+                <div style="font-size: 1.3em; color: var(--color-primary); font-weight:700; margin-bottom:5px;">Büyük Kış Güncellemesi Yayında!</div>
+                <p>Yeni Kış Zindanları, Sınırlı Süreli Eşyalar ve özel Kış Etkinlikleri başladı. Ödüllerinizi almak için hemen giriş yapın.</p>
+                <a href="#" class="news-button">Daha Fazla Oku</a>
+            </div>
+        </div>
+
+        <div class="news-item" style="display:flex;">
+            <img src="https://cdn.discordapp.com/attachments/1447148623220572212/1450124557221630134/mcswlogo.png?ex=6941653c&is=694013bc&hm=0233b34654038384c50a6ab94d7161c05bbbbf5310ff0b3e777708467780a8ac&" alt="Ekonomi Güncellemesi" class="news-image">
+            <div style="padding: 0 20px;">
+                <div style="font-size: 0.85em; color: var(--color-text-light);">Güncelleme - 05 Aralık, 2025</div>
+                <div style="font-size: 1.3em; color: var(--color-primary); font-weight:700; margin-bottom:5px;">Ekonomi Dengesi ve Hata Düzeltmeleri</div>
+                <p>Sunucu ekonomisi yeniden dengelendi. Bilinen tüm hatalar ve exploitler düzeltildi. İyi oyunlar!</p>
+                <a href="#" class="news-button">Daha Fazla Oku</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="sidebar">
+        <button class="ip-copy-button" onclick="copyIP()">
+            TIKLA & KOPYALA: <br> street-brakes.gl.joinmc.link:14056
+        </button>
+        
+        <div id="online-players-list" class="news-item" style="padding:15px; margin-bottom:20px;">
+            <h3>Çevrimiçi Oyuncular:</h3>
+            <p>Oyuncu verileri yükleniyor...</p>
+        </div>
+        
+        <h2>DISCORD TOPLULUĞU</h2>
+        <iframe 
+            src="https://discord.com/widget?id=1446825443205578865&theme=dark" 
+            width="100%" 
+            height="350" 
+            allowtransparency="true" 
+            frameborder="0" 
+            sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+            style="border-radius: 8px;">
+        </iframe>
+    </div>
+</div>
+
+<script>
+    // --- API Adresi ---
+    const DISPLAY_IP = "street-brakes.gl.joinmc.link:14056";
+    const API_IP_PORT = "street-brakes.gl.joinmc.link:14056"; 
+    const API_URL = `https://api.mcstatus.io/v2/status/java/${API_IP_PORT}`; 
+
+    function fetchPlayerData() {
+        fetch(API_URL)
+            .then(response => response.json())
+            .then(data => {
+                const statusElement = document.getElementById('player-status');
+                const playersListElement = document.getElementById('online-players-list');
+                
+                if (data.online) {
+                    const onlinePlayers = data.players.online;
+                    statusElement.innerHTML = `<span>${onlinePlayers} OYUNCU ÇEVRİMİÇİ</span> CREDOS SMP`;
+
+                    if (playersListElement) {
+                        if (data.players.list && data.players.list.length > 0) {
+                            let playerHtml = '<h3>Çevrimiçi Oyuncular:</h3><ul class="rules-list">';
+                            data.players.list.slice(0, 10).forEach(player => {
+                                playerHtml += `<li>${player.name_clean}</li>`;
+                            });
+                            playerHtml += '</ul>';
+                            playersListElement.innerHTML = playerHtml;
+                        } else if (onlinePlayers > 0) {
+                            playersListElement.innerHTML = '<h3>Çevrimiçi Oyuncular:</h3><p>Sunucu oyuncu listesini gizliyor, ancak ' + onlinePlayers + ' oyuncu çevrimiçi!</p>';
+                        } else {
+                            playersListElement.innerHTML = '<h3>Çevrimiçi Oyuncular:</h3><p>Şu anda çevrimiçi oyuncu yok.</p>';
+                        }
+                    }
+
+                } else {
+                    statusElement.innerHTML = `<span>SUNUCU ÇEVRİMDIŞI</span> VEYA VERİ MEVCUT DEĞİL`;
+                    if (playersListElement) {
+                        playersListElement.innerHTML = '<h3>Çevrimiçi Oyuncular:</h3><p>Sunucu çevrimdışı.</p>';
+                    }
+                }
+            })
+            .catch(error => {
+                document.getElementById('player-status').innerHTML = `<span>API HATASI</span> VERİ MEVCUT DEĞİL`;
+                if (document.getElementById('online-players-list')) {
+                    document.getElementById('online-players-list').innerHTML = '<h3>Çevrimiçi Oyuncular:</h3><p>Oyuncu verisi yüklenemedi.</p>';
+                }
+            });
+    }
+
+    function copyIP() {
+        navigator.clipboard.writeText(DISPLAY_IP).then(() => {
+            alert("IP Adresi Kopyalandı: " + DISPLAY_IP);
+        }, (err) => {
+            alert("Kopyalama başarısız. Lütfen manuel olarak kopyalayın.");
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchPlayerData);
+</script>
+
+<footer>
+    <p>Credos SMP &copy; 2025 Tüm Hakları Saklıdır.</p>
+    <p>Sunucu IP: street-brakes.gl.joinmc.link:14056 | Discord: https://discord.gg/cPhv6H7g3x</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kurallar | Minecraft Server</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Bungee&display=swap" rel="stylesheet">
+    
+    <style>
+        /* (index.html ile aynı CSS'in çoğu burada da bulunmaktadır) */
+        :root { --color-primary: #5B86FF; --color-secondary: #0a0a0c; --color-card: #1a1a1e; --color-text: #e0e0e0; --color-text-light: #aaa; --font-main: 'Roboto', sans-serif; --font-title: 'Bungee', cursive; }
+        body { font-family: var(--font-main); margin: 0; padding: 0; background-color: var(--color-secondary); color: var(--color-text); line-height: 1.6; }
+        .header-bg { background: url('https://demo-site.leaderos.net/assets/flat/img/header-bg.png?cache=1750630063') center bottom/cover no-repeat; height: 350px; position: relative; z-index: 1; }
+        .header-bg::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to bottom, rgba(10, 10, 12, 0) 0%, rgba(10, 10, 12, 0.9) 100%); z-index: 2; }
+        header { max-width: 1200px; margin: 0 auto; padding: 20px; position: relative; z-index: 3; }
+        .branding { display: flex; align-items: center; padding-top: 50px; }
+        /* LOGO GÜNCELLENDİ */
+        .logo-circle {
+            background: url('https://cdn.discordapp.com/attachments/1447148623220572212/1450124557221630134/mcswlogo.png?ex=6941653c&is=694013bc&hm=0233b34654038384c50a6ab94d7161c05bbbbf5310ff0b3e777708467780a8ac&') center center/contain no-repeat;
+            background-color: transparent; 
+            width: 70px; 
+            height: 70px;
+            border-radius: 0; 
+            margin-right: 15px;
+            text-indent: -9999px; 
+        }
+        .server-status { display: flex; gap: 20px; }
+        .status-item { color: var(--color-text-light); font-size: 0.9em; }
+        .status-item span { display: block; color: white; font-family: var(--font-title); font-size: 1.2em; }
+        .main-menu { background-color: var(--color-card); border-bottom: 2px solid var(--color-primary); display: flex; justify-content: center; padding: 10px 20px; max-width: 1200px; margin: -30px auto 20px auto; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); position: relative; z-index: 4; }
+        .main-menu a { color: var(--color-text); text-decoration: none; padding: 10px 20px; font-weight: 700; transition: color 0.3s, background-color 0.3s; border-radius: 4px; }
+        .main-menu a:hover { color: var(--color-primary); }
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; display: flex; gap: 20px; }
+        .main-content { flex: 3; }
+        h2 { font-family: var(--font-title); color: var(--color-primary); border-bottom: 2px solid var(--color-card); padding-bottom: 5px; margin-top: 0; }
+        .rules-list { list-style: none; padding: 0; }
+        .rules-list li { background-color: #242428; padding: 10px; margin-bottom: 8px; border-left: 3px solid var(--color-primary); border-radius: 4px; font-size: 0.95em; }
+        footer { background-color: var(--color-card); color: var(--color-text-light); text-align: center; padding: 20px 0; margin-top: 40px; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+<div class="header-bg">
+    <header>
+        <div class="branding">
+            <div class="logo-circle">CS</div>
+            <div class="server-status">
+                <div class="status-item" id="player-status"><span>SUNUCU DURUMU</span> ANA SAYFADA KONTROL ET</div>
+                <div class="status-item"><span>+ ÜYE ÇEVRİMİÇİ</span> DISCORD TOPLULUĞU</div>
+            </div>
+        </div>
+    </header>
+</div>
+
+<nav class="main-menu">
+    <a href="index.html">Anasayfa</a>
+    <a href="store.html">Mağaza</a> 
+    <a href="#">Forum</a>
+    <a href="rules.html">Kurallar</a>
+    <div style="flex-grow:1;"></div>
+</nav>
+
+<div class="container" style="justify-content: center;">
+    <div class="main-content" style="max-width: 900px; width: 100%;">
+        <h1 style="font-family: var(--font-title); color: #fff;">SUNUCU VE SOHBET KURALLARI</h1>
+        <p style="color:var(--color-text-light);">Bu kurallara uyulmaması, geçici veya kalıcı yasaklanma ile sonuçlanacaktır. Kuralları bilmemek mazeret değildir.</p>
+
+        <div class="rules-section">
+            <h2>SUNUCU OYUN KURALLARI</h2>
+            <ul class="rules-list">
+                <li>Hileli İstemciler veya haksız avantaj sağlayan modifikasyonlar kullanmak yasaktır.</li>
+                <li>Hareket Modları (hız, uçma hilesi vb.) yasaktır.</li>
+                <li>Envanter Modları veya envanter yönetimi hileleri yasaktır.</li>
+                <li>Can Göstergeleri veya hasar gösterim modları yasaktır.</li>
+                <li>Radar veya harita hileleri yasaktır.</li>
+                <li>Freecam veya seyirci modu açığı kullanmak yasaktır.</li>
+                <li>Otomatik Yerleştirme veya otomatik tarım/inşaat araçları yasaktır.</li>
+                <li>Görevleri otomatikleştiren Zararlı Makrolar veya Scriptler yasaktır.</li>
+                <li>Avantaj sağlamak için bug veya açıkları kötüye kullanmak yasaktır.</li>
+                <li>Eşya çoğaltma yöntemleri (dupe) kullanmak yasaktır.</li>
+                <li>IRL Ticareti (oyun içi eşyaları gerçek parayla takas etmek) yasaktır.</li>
+                <li>Davet Ödülleri kötüye kullanımı yasaktır.</li>
+                <li>Sunucular Arası Ticaret yasaktır.</li>
+                <li>Haritayı istismar etmek için tohumu (seed) bulmak veya kullanmak yasaktır.</li>
+            </ul>
+        </div>
+
+        <div class="rules-section">
+            <h2>SOHBET KURALLARI</h2>
+            <ul class="rules-list">
+                <li>Spam yapmak veya başkalarını spam yapmaya teşvik etmek yasaktır.</li>
+                <li>Diğer oyuncuları taciz etmek veya zorbalık yapmak yasaktır.</li>
+                <li>Diğer sunucuların/ürünlerin reklamını veya tanıtımını yapmak yasaktır.</li>
+                <li>Ayrımcılık veya Nefret Söylemi yasaktır.</li>
+                <li>Ölüm Tehdidi yasaktır.</li>
+                <li>Başkalarının Özel Bilgilerini Paylaşmak yasaktır.</li>
+                <li>Başkası gibi davranmak (taklit) yasaktır.</li>
+                <li>Yasakları Atlatmak (Ban Evading) yasaktır.</li>
+                <li>Yetkililere Yalan Söylemek yasaktır.</li>
+                <li>Tüm Bugları, Açıkları ve Hilecileri derhal yetkililere bildiriniz.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>Credos SMP &copy; 2025 Tüm Hakları Saklıdır.</p>
+    <p>Sunucu IP: street-brakes.gl.joinmc.link:14056 | Discord: https://discord.gg/cPhv6H7g3x</p>
+</footer>
+</body>
+</html>
