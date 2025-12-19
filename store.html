@@ -3,164 +3,255 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mağaza | Minecraft Server</title>
+    <title>Mağaza | Credos SMP</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Bungee&display=swap" rel="stylesheet">
-    
     <style>
-        /* (index.html ile aynı CSS'in çoğu burada da bulunmaktadır) */
-        :root { --color-primary: #5B86FF; --color-secondary: #0a0a0c; --color-card: #1a1a1e; --color-text: #e0e0e0; --color-text-light: #aaa; --font-main: 'Roboto', sans-serif; --font-title: 'Bungee', cursive; }
-        body { font-family: var(--font-main); margin: 0; padding: 0; background-color: var(--color-secondary); color: var(--color-text); line-height: 1.6; }
-        .header-bg { background: url('https://demo-site.leaderos.net/assets/flat/img/header-bg.png?cache=1750630063') center bottom/cover no-repeat; height: 350px; position: relative; z-index: 1; }
-        .header-bg::after { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to bottom, rgba(10, 10, 12, 0) 0%, rgba(10, 10, 12, 0.9) 100%); z-index: 2; }
-        header { max-width: 1200px; margin: 0 auto; padding: 20px; position: relative; z-index: 3; }
-        .branding { display: flex; align-items: center; padding-top: 50px; }
-        /* LOGO GÜNCELLENDİ */
-        .logo-circle {
-            background: url('https://cdn.discordapp.com/attachments/1447148623220572212/1450124557221630134/mcswlogo.png?ex=6941653c&is=694013bc&hm=0233b34654038384c50a6ab94d7161c05bbbbf5310ff0b3e777708467780a8ac&') center center/contain no-repeat;
-            background-color: transparent; 
-            width: 70px; 
-            height: 70px;
-            border-radius: 0; 
-            margin-right: 15px;
-            text-indent: -9999px; 
+        :root {
+            --color-primary: #a855f7; 
+            --color-secondary: #0a0a0c; 
+            --color-card: #1a1a1e; 
+            --color-text: #e0e0e0; 
+            --glow-mor: 0 0 15px #a855f7, 0 0 30px rgba(168, 85, 247, 0.4);
+            --font-main: 'Roboto', sans-serif;
+            --font-title: 'Bungee', cursive; 
         }
-        .server-status { display: flex; gap: 20px; }
-        .status-item { color: var(--color-text-light); font-size: 0.9em; }
-        .status-item span { display: block; color: white; font-family: var(--font-title); font-size: 1.2em; }
-        .main-menu { background-color: var(--color-card); border-bottom: 2px solid var(--color-primary); display: flex; justify-content: center; padding: 10px 20px; max-width: 1200px; margin: -30px auto 20px auto; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); position: relative; z-index: 4; }
-        .main-menu a { color: var(--color-text); text-decoration: none; padding: 10px 20px; font-weight: 700; transition: color 0.3s, background-color 0.3s; border-radius: 4px; }
-        .main-menu a:hover { color: var(--color-primary); }
-        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; display: flex; gap: 20px; flex-direction: column; align-items: center; }
-        .main-content { width: 100%; max-width: 1100px; }
-        h2 { font-family: var(--font-title); color: var(--color-primary); border-bottom: 2px solid var(--color-card); padding-bottom: 5px; margin-top: 0; text-align: left; }
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
-        .product-card { background-color: var(--color-card); padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); transition: transform 0.3s; }
-        .product-card:hover { transform: translateY(-5px); border-bottom: 3px solid var(--color-primary); }
-        .product-card h3 { font-family: var(--font-title); color: white; margin-top: 0; font-size: 1.5em; }
-        .product-card .price { font-size: 1.8em; color: var(--color-primary); font-weight: 700; margin: 10px 0 20px 0; }
-        .product-card .buy-button { display: block; padding: 10px 0; background-color: var(--color-primary); color: white; text-decoration: none; border-radius: 4px; font-weight: bold; transition: background-color 0.3s; }
-        .product-card .buy-button:hover { background-color: #3f68d6; }
-        .iban-info { background-color: var(--color-card); padding: 30px; border-radius: 8px; border: 2px solid var(--color-primary); margin-top: 40px; margin-bottom: 40px; text-align: center; }
-        .iban-info h2 { text-align: center; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .iban-info p { font-size: 1.1em; margin: 15px 0; }
-        .iban-info span { color: var(--color-primary); font-weight: bold; font-family: var(--font-title); }
-        footer { background-color: var(--color-card); color: var(--color-text-light); text-align: center; padding: 20px 0; margin-top: 40px; font-size: 0.9em; }
+
+        body { font-family: var(--font-main); margin: 0; background-color: var(--color-secondary); color: var(--color-text); line-height: 1.6; }
+        .header-bg { background: linear-gradient(rgba(10, 10, 12, 0.6), rgba(10, 10, 12, 0.9)), url('https://demo-site.leaderos.net/assets/flat/img/header-bg.png?cache=1750630063') center bottom/cover no-repeat; height: 350px; display: flex; align-items: center; justify-content: center; border-bottom: 3px solid var(--color-primary); box-shadow: var(--glow-mor); }
+        .header-logo { max-width: 550px; filter: drop-shadow(var(--glow-mor)); }
+        
+        .main-menu { background-color: var(--color-card); border-bottom: 2px solid var(--color-primary); display: flex; justify-content: center; padding: 10px 20px; max-width: 1200px; margin: -30px auto 20px auto; border-radius: 8px; box-shadow: var(--glow-mor); position: relative; z-index: 4; }
+        .main-menu a { color: var(--color-text); text-decoration: none; padding: 10px 20px; font-weight: 700; font-family: var(--font-title); transition: 0.3s; }
+        .main-menu a:hover { color: var(--color-primary); text-shadow: var(--glow-mor); }
+        
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; display: flex; gap: 20px; flex-wrap: wrap; }
+        .main-content { flex: 2; min-width: 300px; }
+        .sidebar { flex: 1; min-width: 300px; }
+
+        .category-title { font-family: var(--font-title); color: #fff; border-left: 5px solid var(--color-primary); padding-left: 15px; margin: 40px 0 20px 0; text-shadow: var(--glow-mor); font-size: 1.2rem; }
+
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; }
+        .product-card { background-color: var(--color-card); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid var(--color-primary); box-shadow: var(--glow-mor); transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; }
+        .product-card:hover { transform: translateY(-5px); border-color: #fff; }
+        .product-card img { width: 80px; height: 80px; object-fit: contain; margin: 0 auto 10px auto; filter: drop-shadow(0 0 5px var(--color-primary)); }
+        .product-card h3 { font-family: var(--font-title); color: #fff; margin: 5px 0; font-size: 0.8rem; height: 35px; overflow: hidden; }
+        .price-tag { color: var(--color-primary); font-size: 1.1rem; font-weight: bold; display: block; margin-bottom: 10px; }
+        
+        /* Sepet Tasarımı */
+        .cart-card { background-color: var(--color-card); padding: 20px; border-radius: 8px; border: 1px solid var(--color-primary); box-shadow: var(--glow-mor); position: sticky; top: 20px; }
+        .cart-card h2 { font-family: var(--font-title); font-size: 1.1rem; color: #fff; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .cart-items { list-style: none; padding: 0; margin: 0; max-height: 250px; overflow-y: auto; }
+        .cart-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #222; font-size: 0.85rem; align-items: center; }
+        .remove-btn { color: #ff4444; cursor: pointer; font-weight: bold; margin-left: 10px; font-size: 1.2rem; }
+        .cart-total { font-family: var(--font-title); margin-top: 15px; font-size: 1.1rem; text-align: right; color: var(--color-primary); }
+
+        .buy-button { background: var(--color-primary); color: white; border: none; padding: 10px; border-radius: 5px; font-family: var(--font-title); cursor: pointer; width: 100%; box-shadow: var(--glow-mor); transition: 0.3s; font-size: 0.7rem; margin-top: 5px; }
+        .buy-button:hover { background: #fff; color: var(--color-primary); }
+
+        /* Ödeme Bilgileri (Gizli) */
+        #payment-section { display: none; background: rgba(168, 85, 247, 0.05); border: 2px dashed var(--color-primary); padding: 20px; border-radius: 8px; margin-top: 30px; animation: fadeIn 0.4s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .payment-info p { margin: 5px 0; font-size: 0.95rem; }
+        .payment-info span { color: var(--color-primary); font-weight: bold; }
+
+        footer { background-color: var(--color-card); text-align: center; padding: 30px; margin-top: 40px; border-top: 2px solid var(--color-primary); }
     </style>
 </head>
 <body>
 
 <div class="header-bg">
-    <header>
-        <div class="branding">
-            <div class="logo-circle">CS</div>
-            <div class="server-status">
-                <div class="status-item" id="player-status"><span>SUNUCU DURUMU</span> ANA SAYFADA KONTROL ET</div>
-                <div class="status-item"><span>+ ÜYE ÇEVRİMİÇİ</span> DISCORD TOPLULUĞU</div>
-            </div>
-        </div>
-    </header>
+    <img src="https://static1.textcraft.net/data1/4/d/4dba330b49382db629a2473426386eab6866058cda39a3ee5e6b4b0d3255bfef95601890afd80709da39a3ee5e6b4b0d3255bfef95601890afd80709c77c824de4af799da2b0a836032c8ba2.png" class="header-logo">
 </div>
 
 <nav class="main-menu">
     <a href="index.html">Anasayfa</a>
-    <a href="store.html">Mağaza</a> 
-    <a href="#">Forum</a>
+    <a href="store.html">Mağaza</a>
     <a href="rules.html">Kurallar</a>
-    <div style="flex-grow:1;"></div>
 </nav>
 
 <div class="container">
     <div class="main-content">
-        <h1 style="font-family: var(--font-title); color: #fff; text-align: center; margin-bottom: 40px;">SUNUCU MAĞAZASI</h1>
         
-        <h2>ÖZEL RÜTBELER</h2>
+        <h2 class="category-title">RANK PAKETLERİ</h2>
         <div class="product-grid">
             <div class="product-card">
-                <h3>VIP</h3>
-                <p class="price">150 TL</p>
-                <p>Başlangıç paketi. Bazı özel komutlar ve kozmetikler içerir.</p>
-                <a href="#" class="buy-button">Satın Al (Banka)</a>
+                <img src="https://static1.textcraft.net/data1/d/9/d939b9d11c74b97327396823f15609a6f24db58cda39a3ee5e6b4b0d3255bfef95601890afd80709da39a3ee5e6b4b0d3255bfef95601890afd8070969377081f0899927ff57a3e379967818.png">
+                <h3>VIP</h3><span class="price-tag">100 TL</span>
+                <button class="buy-button" onclick="addToCart('VIP', 100)">SEPETE EKLE</button>
             </div>
-            
             <div class="product-card">
-                <h3>VIP PLUS</h3>
-                <p class="price">250 TL</p>
-                <p>VIP özelliklerine ek olarak daha fazla yetenek ve ödül.</p>
-                <a href="#" class="buy-button">Satın Al (Banka)</a>
+                <img src="https://static1.textcraft.net/data1/a/d/ad7535a10cc89747086e793f6aeff422f5046162da39a3ee5e6b4b0d3255bfef95601890afd80709da39a3ee5e6b4b0d3255bfef95601890afd8070969377081f0899927ff57a3e379967818.png">
+                <h3>VIP PLUS</h3><span class="price-tag">150 TL</span>
+                <button class="buy-button" onclick="addToCart('VIP PLUS', 150)">SEPETE EKLE</button>
             </div>
-
             <div class="product-card">
-                <h3>M-VIP</h3>
-                <p class="price">400 TL</p>
-                <p>Mağaza VIP'si. En çok tercih edilen rütbe!</p>
-                <a href="#" class="buy-button">Satın Al (Banka)</a>
+                <img src="https://static1.textcraft.net/data1/2/6/26e5c5267bc656724288e79f6cacd27b878ea56cda39a3ee5e6b4b0d3255bfef95601890afd80709da39a3ee5e6b4b0d3255bfef95601890afd807093d1f51b17d0d687822403e3437a2c0de.png">
+                <h3>MVIP</h3><span class="price-tag">200 TL</span>
+                <button class="buy-button" onclick="addToCart('MVIP', 200)">SEPETE EKLE</button>
             </div>
-            
             <div class="product-card">
-                <h3>M-VIP PLUS</h3>
-                <p class="price">600 TL</p>
-                <p>Sunucudaki en yüksek rütbe. En iyi komutlar ve ayrıcalıklar.</p>
-                <a href="#" class="buy-button">Satın Al (Banka)</a>
+                <img src="https://static1.textcraft.net/data1/6/1/61f8d61ecf6cb21c0b76436f7edfa9ac97428268da39a3ee5e6b4b0d3255bfef95601890afd80709da39a3ee5e6b4b0d3255bfef95601890afd807093d1f51b17d0d687822403e3437a2c0de.png">
+                <h3>MVIP PLUS</h3><span class="price-tag">250 TL</span>
+                <button class="buy-button" onclick="addToCart('MVIP PLUS', 250)">SEPETE EKLE</button>
+            </div>
+            <div class="product-card">
+                <img src="https://static1.textcraft.net/data1/2/6/26e5c5267bc656724288e79f6cacd27b878ea56cda39a3ee5e6b4b0d3255bfef95601890afd80709da39a3ee5e6b4b0d3255bfef95601890afd807093d1f51b17d0d687822403e3437a2c0de.png">
+                <h3>CVIP</h3><span class="price-tag">350 TL</span>
+                <button class="buy-button" onclick="addToCart('CVIP', 350)">SEPETE EKLE</button>
+            </div>
+            <div class="product-card">
+                <img src="https://static1.textcraft.net/data1/6/1/61f8d61ecf6cb21c0b76436f7edfa9ac97428268da39a3ee5e6b4b0d3255bfef95601890afd80709da39a3ee5e6b4b0d3255bfef95601890afd807093d1f51b17d0d687822403e3437a2c0de.png">
+                <h3>CVIP PLUS</h3><span class="price-tag">450 TL</span>
+                <button class="buy-button" onclick="addToCart('CVIP PLUS', 450)">SEPETE EKLE</button>
             </div>
         </div>
 
-        <h2>MC SPAWNERLAR</h2>
+        <h2 class="category-title">SPAWNERLAR</h2>
         <div class="product-grid">
             <div class="product-card">
-                <h3>Domuz Spawner</h3>
-                <p class="price">50 TL</p>
-                <p>Tarım ve kaynak için Domuz Spawnerı.</p>
-                <a href="#" class="buy-button">Satın Al (Banka)</a>
+                <img src="https://hayalmc.net/assets/core/images/store/products/ba540cf9d5ec651d5576ae54135e8f7f.png">
+                <h3>DOMUZ SP</h3><span class="price-tag">50 TL</span>
+                <button class="buy-button" onclick="addToCart('Domuz SP', 50)">SEPETE EKLE</button>
             </div>
-            
             <div class="product-card">
-                <h3>İnek Spawner</h3>
-                <p class="price">75 TL</p>
-                <p>Daha değerli eşyalar için İnek Spawnerı.</p>
-                <a href="#" class="buy-button">Satın Al (Banka)</a>
+                <img src="https://hayalmc.net/assets/core/images/store/products/a1210066f6f6129557ce30e0440921aa.png">
+                <h3>İNEK SP</h3><span class="price-tag">75 TL</span>
+                <button class="buy-button" onclick="addToCart('İnek SP', 75)">SEPETE EKLE</button>
             </div>
-
             <div class="product-card">
-                <h3>Zombi Spawner</h3>
-                <p class="price">100 TL</p>
-                <p>Tecrübe puanı (XP) ve çürük et kaynağı.</p>
-                <a href="#" class="buy-button">Satın Al (Banka)</a>
+                <img src="https://hayalmc.net/assets/core/images/store/products/3217c27d03032bcfab562026d49b74f9.png">
+                <h3>TAVUK SP</h3><span class="price-tag">40 TL</span>
+                <button class="buy-button" onclick="addToCart('Tavuk SP', 40)">SEPETE EKLE</button>
             </div>
-            
             <div class="product-card">
-                <h3>İskelet Spawner</h3>
-                <p class="price">150 TL</p>
-                <p>Ok ve kemik tozu için ideal spawner.</p>
-                <a href="#" class="buy-button">Satın Al (Banka)</a>
+                <img src="https://hayalmc.net/assets/core/images/store/products/ac5f795bab32dc44f130da9db1739198.png">
+                <h3>KOYUN SP</h3><span class="price-tag">50 TL</span>
+                <button class="buy-button" onclick="addToCart('Koyun SP', 50)">SEPETE EKLE</button>
+            </div>
+            <div class="product-card">
+                <img src="https://hayalmc.net/assets/core/images/store/products/bab0f48f7881bd84186c21f906c6d517.png">
+                <h3>ZOMBİ SP</h3><span class="price-tag">100 TL</span>
+                <button class="buy-button" onclick="addToCart('Zombi SP', 100)">SEPETE EKLE</button>
+            </div>
+            <div class="product-card">
+                <img src="https://hayalmc.net/assets/core/images/store/products/6b34dee5842a1a3672e420156a0fcbc0.png">
+                <h3>İSKELET SP</h3><span class="price-tag">120 TL</span>
+                <button class="buy-button" onclick="addToCart('İskelet SP', 120)">SEPETE EKLE</button>
+            </div>
+            <div class="product-card">
+                <img src="https://hayalmc.net/assets/core/images/store/products/bcafe5b6999e79a50904586a7ab7ac47.png">
+                <h3>ÖRÜMCEK SP</h3><span class="price-tag">90 TL</span>
+                <button class="buy-button" onclick="addToCart('Örümcek SP', 90)">SEPETE EKLE</button>
+            </div>
+            <div class="product-card">
+                <img src="https://hayalmc.net/assets/core/images/store/products/235db0c3afeb0f48d6b37a9325815fd4.png">
+                <h3>CREEPER SP</h3><span class="price-tag">200 TL</span>
+                <button class="buy-button" onclick="addToCart('Creeper SP', 200)">SEPETE EKLE</button>
+            </div>
+            <div class="product-card">
+                <img src="https://hayalmc.net/assets/core/images/store/products/1c3d4848a4db00e8eefd234143690cdd.png">
+                <h3>BLAZE SP</h3><span class="price-tag">200 TL</span>
+                <button class="buy-button" onclick="addToCart('Blaze SP', 200)">SEPETE EKLE</button>
+            </div>
+            <div class="product-card">
+                <img src="https://hayalmc.net/assets/core/images/store/products/4117414d4103a77bd500e91add43f9c5.png">
+                <h3>DEMİR GOLEM SP</h3><span class="price-tag">250 TL</span>
+                <button class="buy-button" onclick="addToCart('Golem SP', 250)">SEPETE EKLE</button>
+            </div>
+            <div class="product-card">
+                <img src="https://hayalmc.net/assets/core/images/store/products/17c6dbe1ec940005c5d483f65647e9a6.png">
+                <h3>GARDİYAN SP</h3><span class="price-tag">220 TL</span>
+                <button class="buy-button" onclick="addToCart('Gardiyan SP', 220)">SEPETE EKLE</button>
+            </div>
+            <div class="product-card">
+                <img src="https://hayalmc.net/assets/core/images/store/products/d273002ad5a6c66d2d1cb5d98d722837.png">
+                <h3>PIGMAN SP</h3><span class="price-tag">180 TL</span>
+                <button class="buy-button" onclick="addToCart('Pigman SP', 180)">SEPETE EKLE</button>
             </div>
         </div>
-        
-        <div class="iban-info">
-            <h2>ÖDEME BİLGİLERİ</h2>
-            <p>Desteklediğiniz için teşekkür ederiz! Ödeme yaptıktan sonra Discord üzerinden kanıtı iletiniz.</p>
-            <p>IBAN (TR): <span id="iban-number">TR28 0086 9000 0000 0015 3441 48</span></p>
+
+        <div id="payment-section" class="payment-info">
+            <h2>GÜVENLİ ÖDEME BİLGİLERİ</h2>
+            <p>Seçtiğiniz ürünler için aşağıdaki hesaba transfer yapınız:</p>
             <p>Alıcı Adı: <span>GAMZE ÖZÇELİK</span></p>
-            <p>Banka Adı: <span>Turkcell / Paycell</span></p>
-            <button class="buy-button" onclick="copyIban()" style="width: auto; margin-top: 15px;">IBAN'I KOPYALA</button>
+            <p>Banka: <span>Turkcell / Paycell</span></p>
+            <p>IBAN: <span id="iban-number">TR28 0086 9000 0000 0015 3441 48</span></p>
+            <button class="buy-button" onclick="copyIban()" style="width: auto; margin-top: 10px; padding: 10px 20px;">IBAN KOPYALA</button>
+            <p style="margin-top:15px; font-size: 0.8rem; color: #aaa; font-style: italic;">* Ödeme tamamlandıktan sonra Discord üzerinden dekont iletmeyi unutmayın.</p>
         </div>
-        
+    </div>
+    
+    <div class="sidebar">
+        <div class="cart-card">
+            <h2>ALIŞVERİŞ SEPETİ</h2>
+            <ul id="cart-list" class="cart-items">
+                <li style="color: #666; font-size: 0.8rem; padding: 10px 0;">Sepetiniz şu an boş.</li>
+            </ul>
+            <div class="cart-total">
+                Toplam: <span id="total-price">0</span> TL
+            </div>
+            <button class="buy-button" id="checkout-btn" style="margin-top: 15px; font-size: 0.9rem; padding: 12px;" onclick="showPayment()">ÖDEMEYE GEÇ</button>
+        </div>
     </div>
 </div>
 
 <script>
+    let cart = [];
+    let total = 0;
+
+    function addToCart(name, price) {
+        cart.push({name, price});
+        updateCart();
+        document.getElementById('payment-section').style.display = 'none'; // Sepet değişince ödemeyi gizle
+    }
+
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        updateCart();
+        if(cart.length === 0) document.getElementById('payment-section').style.display = 'none';
+    }
+
+    function updateCart() {
+        const list = document.getElementById('cart-list');
+        const totalEl = document.getElementById('total-price');
+        list.innerHTML = '';
+        total = 0;
+
+        if(cart.length === 0) {
+            list.innerHTML = '<li style="color: #666; font-size: 0.8rem; padding: 10px 0;">Sepetiniz şu an boş.</li>';
+        } else {
+            cart.forEach((item, index) => {
+                total += item.price;
+                list.innerHTML += `
+                    <li class="cart-item">
+                        <span>${item.name}</span>
+                        <span>${item.price} TL <span class="remove-btn" onclick="removeFromCart(${index})">&times;</span></span>
+                    </li>`;
+            });
+        }
+        totalEl.innerText = total;
+    }
+
+    function showPayment() {
+        if(cart.length === 0) {
+            alert("Önce sepete ürün eklemelisin!");
+            return;
+        }
+        document.getElementById('payment-section').style.display = 'block';
+        window.scrollTo({ 
+            top: document.getElementById('payment-section').offsetTop - 100, 
+            behavior: 'smooth' 
+        });
+    }
+
     function copyIban() {
         const iban = document.getElementById('iban-number').textContent;
         navigator.clipboard.writeText(iban).then(() => {
-            alert("IBAN başarıyla kopyalandı: " + iban);
-        }, (err) => {
-            alert("Kopyalama başarısız oldu. Lütfen manuel olarak kopyalayın.");
+            alert("IBAN Kopyalandı: " + iban);
         });
     }
 </script>
 
-<footer>
-    <p>Credos SMP &copy; 2025 Tüm Hakları Saklıdır.</p>
-    <p>Sunucu IP: street-brakes.gl.joinmc.link:14056 | Discord: https://discord.gg/cPhv6H7g3x</p>
-</footer>
+<footer><p>Credos SMP &copy; 2025 Tüm Hakları Saklıdır.</p></footer>
 </body>
 </html>
