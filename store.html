@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mağaza | Credos SMP</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Bungee&display=swap" rel="stylesheet">
+    <script src="script.js"></script>
     <style>
         :root {
             --color-primary: #a855f7; 
@@ -37,7 +38,6 @@
         .product-card h3 { font-family: var(--font-title); color: #fff; margin: 5px 0; font-size: 0.8rem; height: 35px; overflow: hidden; }
         .price-tag { color: var(--color-primary); font-size: 1.1rem; font-weight: bold; display: block; margin-bottom: 10px; }
         
-        /* Sepet Tasarımı */
         .cart-card { background-color: var(--color-card); padding: 20px; border-radius: 8px; border: 1px solid var(--color-primary); box-shadow: var(--glow-mor); position: sticky; top: 20px; }
         .cart-card h2 { font-family: var(--font-title); font-size: 1.1rem; color: #fff; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px; }
         .cart-items { list-style: none; padding: 0; margin: 0; max-height: 250px; overflow-y: auto; }
@@ -48,11 +48,13 @@
         .buy-button { background: var(--color-primary); color: white; border: none; padding: 10px; border-radius: 5px; font-family: var(--font-title); cursor: pointer; width: 100%; box-shadow: var(--glow-mor); transition: 0.3s; font-size: 0.7rem; margin-top: 5px; }
         .buy-button:hover { background: #fff; color: var(--color-primary); }
 
-        /* Ödeme Bilgileri (Gizli) */
         #payment-section { display: none; background: rgba(168, 85, 247, 0.05); border: 2px dashed var(--color-primary); padding: 20px; border-radius: 8px; margin-top: 30px; animation: fadeIn 0.4s; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .payment-info p { margin: 5px 0; font-size: 0.95rem; }
-        .payment-info span { color: var(--color-primary); font-weight: bold; }
+        
+        .iban-box { background: var(--color-card); padding: 15px; border-radius: 8px; border: 1px solid var(--color-primary); margin-bottom: 15px; text-align: left; }
+        .iban-box p { margin: 5px 0; font-size: 0.9rem; }
+        .iban-box b { color: var(--color-primary); }
+        .copy-btn { background: var(--color-primary); color: #fff; padding: 3px 8px; border-radius: 4px; font-size: 0.7rem; cursor: pointer; margin-left: 10px; }
 
         footer { background-color: var(--color-card); text-align: center; padding: 30px; margin-top: 40px; border-top: 2px solid var(--color-primary); }
     </style>
@@ -170,14 +172,18 @@
             </div>
         </div>
 
-        <div id="payment-section" class="payment-info">
-            <h2>GÜVENLİ ÖDEME BİLGİLERİ</h2>
-            <p>Seçtiğiniz ürünler için aşağıdaki hesaba transfer yapınız:</p>
-            <p>Alıcı Adı: <span>GAMZE ÖZÇELİK</span></p>
-            <p>Banka: <span>Turkcell / Paycell</span></p>
-            <p>IBAN: <span id="iban-number">TR28 0086 9000 0000 0015 3441 48</span></p>
-            <button class="buy-button" onclick="copyIban()" style="width: auto; margin-top: 10px; padding: 10px 20px;">IBAN KOPYALA</button>
-            <p style="margin-top:15px; font-size: 0.8rem; color: #aaa; font-style: italic;">* Ödeme tamamlandıktan sonra Discord üzerinden dekont iletmeyi unutmayın.</p>
+        <div id="payment-section">
+            <h2 class="category-title" style="margin-top: 0; border: none; padding: 0;">💳 ÖDEME YAP</h2>
+            <div class="iban-box">
+                <p><b>Banka:</b> PAYCELL/TURKCELL</p>
+                <p><b>İsim:</b> GAMZE ÖZÇELİK</p>
+                <p><b>IBAN:</b> <span id="iban-number">TR28 0086 9000 0000 0015 3441 48</span> <span class="copy-btn" onclick="copyIban()">KOPYALA</span></p>
+            </div>
+            <p style="font-size: 0.8rem; color: #aaa; margin-bottom: 15px;">⚠️ Ödemeyi yaptıktan 1-2 dakika sonra sorgula butonuna basın.</p>
+            <button onclick="odemeSorgula()" style="background: #facc15; color: #000; padding: 15px; border-radius: 8px; font-weight: bold; cursor: pointer; width: 100%; border: none;">
+                💰 ÖDEMEYİ SORGULA (OTOMATİK)
+            </button>
+            <p id="status-msg" style="margin-top: 15px; font-weight: bold; text-align: center;"></p>
         </div>
     </div>
     
@@ -199,10 +205,12 @@
     let cart = [];
     let total = 0;
 
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby-paIKdq5xLyE1-WnlOGaGC-WS7rabYPI2nqzqz0A7r7K_C4IeWTOgVUDAC_COsEoR/exec";
+
     function addToCart(name, price) {
         cart.push({name, price});
         updateCart();
-        document.getElementById('payment-section').style.display = 'none'; // Sepet değişince ödemeyi gizle
+        document.getElementById('payment-section').style.display = 'none'; 
     }
 
     function removeFromCart(index) {
@@ -250,8 +258,28 @@
             alert("IBAN Kopyalandı: " + iban);
         });
     }
-</script>
 
+    async function odemeSorgula() {
+        const statusMsg = document.getElementById('status-msg');
+        if (statusMsg) statusMsg.innerText = "Mailler kontrol ediliyor... ⏳";
+
+        try {
+            const response = await fetch(SCRIPT_URL);
+            const data = await response.text();
+
+            if (data.includes("ONAYLANDI")) {
+                statusMsg.style.color = "#22c55e";
+                statusMsg.innerText = "✅ ÖDEME ONAYLANDI! Ürününüz hazırlanıyor.";
+                alert("Ödeme onaylandı, teşekkürler!");
+            } else {
+                statusMsg.style.color = "#ef4444";
+                statusMsg.innerText = "❌ Henüz ödeme maili gelmemiş. 1-2 dk sonra tekrar deneyin.";
+            }
+        } catch (error) {
+            alert("Sorgulama hatası! Linki kontrol et.");
+        }
+    }
+</script>
 <footer><p>Credos SMP &copy; 2025 Tüm Hakları Saklıdır.</p></footer>
 </body>
 </html>
